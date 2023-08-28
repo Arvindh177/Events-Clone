@@ -6,21 +6,30 @@ export default function RegisterPage() {
     const [name,setName] = useState('');
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
-    function registerUSer(ev) {
+    async function registerUSer(ev) {
         ev.preventDefault();
-        axios.post('/register',
+        try{
+            await axios.post('/register',
         {
             name,
             email,
             password,
         });
-    }
+        alert('Registration successful. Now youn can log in');
+
+
+        }
+        catch(e) {
+            alert('Registration failed. Try again later')
+        }
+        
+    };
     return (
         <div className="mt-4 grow flex items-center justify-around">
             <div className="mb-64">
             <h1 className="text-4xl text-center mb-5">Register</h1>
             <form className="max-w-md mx-auto " onSubmit={registerUSer}>
-                <input type="next" placeholder="Knee Grow" 
+                <input type="text" placeholder="Knee Grow" 
                 value={name} 
                 onChange={ev => setName(ev.target.value)}/>
                 <input type="email" placeholder="your@email.com" 
