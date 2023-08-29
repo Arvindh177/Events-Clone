@@ -62,5 +62,12 @@ app.post('/login', async (req,res) => {
     res.json('not found');
   }
 });
+
+app.get('/profile',(req ,res) => {
+
+  const {token} = req.cookies;
+  res.json({token});
+  res.json('user info')
+})
  
 app.listen(4000); 
