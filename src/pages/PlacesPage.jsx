@@ -1,8 +1,15 @@
-
 import { Link,  useParams } from "react-router-dom";
 import AccountNav from "../AccountNav";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function PlacesPage() { 
+    const [places,setPlaces] = useState([]);
+useEffect(()=>{
+    axios.get('/places').then(({data}) => {
+         setPlaces(data);
+    });
+},[]);
     return(
         <div>
             <AccountNav/>
@@ -15,6 +22,24 @@ export default function PlacesPage() {
             <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
             </svg>  Add new event
                 </Link>
+             </div>
+             <div className="mt-4">
+                {places.length > 0 && places.map(place =>(
+                    <Link to={'/account/places/'+place._id} className="flex cursor-pointer gap-4 bg-gray-200 p-4 rounded-2xl">
+                        <div className="w-32 h-32 bg-gray-300 grow shrink-0">
+                            {place.photos.length > 0 &&(
+                                <img src={place.photos[0]} alt=""/>
+                            )}
+                            </div>
+                            <div className="grow-0 shrink">
+                            <h2 className="text-xl">
+                            {place.title} 
+                            </h2>
+                            <p className="text-sm mt-2 ">{place.description}</p>
+                            </div>
+                    
+                    </Link>
+                ))}
              </div>
             
         </div>
