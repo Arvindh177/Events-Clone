@@ -26,6 +26,15 @@ export default function PlacesFormPage() {
         axios.get('/places/'+id)
         .then(response => {
         const {data} = response;
+        setTitle(data.title);
+        setAddress(data.address);
+        setAddedPhotos(data.photos);
+        setDescription(data.description);
+        setPerks(data.perks);
+        setExtraInfo(data.extraInfo);
+        setCheckIn(data.checkIn);
+        setCheckOut(data.checkOut);
+        setMaxGuests(data.maxGuests);
         });
     }, [id])
 
@@ -50,12 +59,24 @@ export default function PlacesFormPage() {
         );
     }
 
-    async function addNewPlace(ev) {
+    async function savePlace(ev) {
         ev.preventDefault();
-        await axios.post('/places', {title, address, addedPhotos,
-            description ,perks, extraInfo, 
-            checkIn, checkOut, maxGuests});
+        const placeData = {
+            id,
+                title, address, addedPhotos,
+                description ,perks, extraInfo, 
+                checkIn, checkOut, maxGuests
+        };
+        if(id) {
+            await axios.put('/places', {
+                id, ...placeData   
+            });
+                setRedirect(true);
+            }
+        else {
+        await axios.post('/places',placeData);
             setRedirect(true);
+        }
     }
     if(redirect) {
         return <Navigate to={'/account/places'}/>
@@ -63,7 +84,7 @@ export default function PlacesFormPage() {
     return(
         <div>
             <AccountNav/>
-                <form onSubmit={addNewPlace}>
+                <form onSubmit={savePlace}>
                     {preInput('Title','Title of your event')}
                     <input type="text" value={title} onChange={ev => setTitle(ev.target.value)} placeholder="title,my events"/>
 
