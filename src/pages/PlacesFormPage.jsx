@@ -18,6 +18,7 @@ export default function PlacesFormPage() {
     const [checkOut,setCheckOut] = useState('');
     const [maxGuests,setMaxGuests] = useState(1);
     const [redirect,setRedirect] = useState(false);
+    const [price,setPrice] = useState(100);
 
     useEffect(() => {
         if(!id) {
@@ -35,6 +36,7 @@ export default function PlacesFormPage() {
         setCheckIn(data.checkIn);
         setCheckOut(data.checkOut);
         setMaxGuests(data.maxGuests);
+        setPrice(data.price);
         });
     }, [id])
 
@@ -65,7 +67,7 @@ export default function PlacesFormPage() {
             id,
                 title, address, addedPhotos,
                 description ,perks, extraInfo, 
-                checkIn, checkOut, maxGuests
+                checkIn, checkOut, maxGuests, price,
         };
         if(id) {
             await axios.put('/places', {
@@ -110,7 +112,7 @@ export default function PlacesFormPage() {
                     onChange={ev => setExtraInfo(ev.target.value)} /> 
 
                     {preInput('Check in&Out times, max guests','Add check in and check out times along with max number of guests per se')}
-                    <div className="grid gap-2 sm:grid-cols-3"> 
+                    <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4"> 
                         <div>
                             <h3 className="mt-2 -mb-1">Check-in time</h3>
                             <input type="text" value={checkIn} 
@@ -122,10 +124,16 @@ export default function PlacesFormPage() {
                             onChange={ev=> setCheckOut(ev.target.value)} placeholder="11"/>
                         </div>
                         <div>
-                            <h3 className="mt-2 -mb-1">Max number of guests allowed</h3>
+                            <h3 className="mt-2 -mb-1">Max guests</h3>
                             <input type="number" value={maxGuests}
                             onChange={ev => setMaxGuests(ev.target.value)}/>
                         </div>
+                        <div>
+                            <h3 className="mt-2 -mb-1">Price</h3>
+                            <input type="number" value={price}
+                            onChange={ev => setPrice(ev.target.value)}/>
+                        </div>
+
                     </div>
                     <div>
                         <button className="primary my-4">Save</button>
